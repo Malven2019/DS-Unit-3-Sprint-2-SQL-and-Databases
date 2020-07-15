@@ -21,9 +21,34 @@ print('CONNECTION', connection)
 # A "cursor", a structure to iterate over db records to perform queries
 cursor = connection.cursor()
 print('CURSOR', cursor)
-# An example query
+
+# FETCH DATA
+
 cursor.execute('SELECT * from test_table;')
 
 # Note - nothing happened yet! We need to actually *fetch* from the cursor
 result = print(cursor.fetchall())
 print(result)
+
+# INSERT DATA
+
+insertion_sql = '''
+INSERT INTO test_table(name, data) VALUES
+(
+    'A row name',
+    null
+),
+(
+    'Another row, with JSON',
+    '{ "a": 1, "b": ["dog", "cat", 42], "c": true }':: JSONB
+);
+'''
+cursor.execute(insertion_sql)
+
+# When modifying our datbase, we need to commit the changes
+# This actually saves the transactions
+
+connection.commit()
+
+cursor.close()
+connection.close()
