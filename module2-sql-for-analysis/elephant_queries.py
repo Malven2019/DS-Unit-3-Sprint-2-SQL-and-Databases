@@ -1,8 +1,9 @@
 
-
 import os
 from dotenv import load_dotenv
 import psycopg2
+import json
+from psycopg2.extras import execute_values
 
 load_dotenv()  # loads contents of the .env file into the script's environment
 
@@ -32,18 +33,24 @@ print(result)
 
 # INSERT DATA
 
-insertion_sql = '''
-INSERT INTO test_table(name, data) VALUES
-(
-    'A row name',
-    null
-),
-(
-    'Another row, with JSON',
-    '{ "a": 1, "b": ["dog", "cat", 42], "c": true }':: JSONB
-);
-'''
-cursor.execute(insertion_sql)
+
+# insertion_sql = '''
+# INSERT INTO test_table(name, data) VALUES
+#('A row name', null),
+# ('Another row, with JSON','{ "a": 1, "b": ["dog", "cat", 42], "c": true }':: JSONB
+# );
+# '''
+# cursor.execute(insertion_sql)
+
+# Data must be a list of tuples!!
+my_dict = {"a": 1, "b": ["dog", "cat", 42], "c": 'true'}
+insertion_query = f"INSERT INTO test_table (name, data) VALUES %s"
+execute_values(cursor, insertion_query, [
+    ('A rowwwww', 'null'),
+    ('Another row, with JSONNNNN', json.dumps(my_dict)),
+    ('Third row', "3")
+])
+
 
 # When modifying our datbase, we need to commit the changes
 # This actually saves the transactions
@@ -52,3 +59,8 @@ connection.commit()
 
 cursor.close()
 connection.close()
+
+# Important steps
+# Fetch the data
+# Convert it into a list of tuples
+# insert the list of tuples
