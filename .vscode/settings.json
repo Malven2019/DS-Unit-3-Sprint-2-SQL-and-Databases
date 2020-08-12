@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\malmt\\.virtualenvs\\Lambdata_MM_DS_16-daXF2rCr\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\malmt\\.virtualenvs\\Lambdata_MM_DS_16-daXF2rCr\\Scripts\\python.exe",
+    "git.ignoreLimitWarning": true
 }
